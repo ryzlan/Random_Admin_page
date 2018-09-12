@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div id="edit" contenteditable="true" onblur="saveEdits(\""+ edit + "\")">
+      Original content
+
+
+    </div>
+    <button onclick="ds()">
+    print these
+    </button>
+
+    <script>
+    function saveEdits(id){
+      console.log(id);
+      var editElem = document.getElementById(id);
+      var userVer = editElem.innerHTML;
+      // localStorage.userEdits= userVer;
+
+      
+      // how to pass a string a s parameter of a js function
+      // give confirmations
+      //id="nav-fragment-<?php echo ++$i; ?>">
+
+      //<a href="" onclick="remove(\''.$row_id.'\')" class="item-remove">
+    }
+    function ds(){
+      console.log( document.getElementById("edit").innerHTML );
+    }
+
+    </script>
+  </body>
+</html>

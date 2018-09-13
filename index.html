@@ -33,15 +33,29 @@
           <div class="card-header">Questions</div>
           <div class="card-body">
             <h5 class="card-title">Question id </h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content?
+
+            <p id="editQues" contenteditable="true"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content?
             </p>
 
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Option A - Cras justo odio</li>
-            <li class="list-group-item">Option B - Dapibus ac facilisis in</li>
-            <li class="list-group-item">Option C - Vestibulum at eros</li>
-            <li class="list-group-item">Option D - Vestibulum at eros</li>
+            <li class="list-group-item"
+                id="editOpA"
+                contenteditable="true"
+            >Option A - Cras justo odio</li>
+            <li class="list-group-item"
+                id="editOpB"
+                contenteditable="true"
+            >Option B - Dapibus ac facilisis in</li>
+            <li class="list-group-item"
+                id="editOpC"
+                contenteditable="true"
+            >Option C - Vestibulum at eros</li>
+            <li class="list-group-item"
+                id="editOpD"
+                contenteditable="true"
+
+            >Option D - Vestibulum at eros</li>
           </ul>
         </div>
 
@@ -53,7 +67,9 @@
         <div class="card-header">Meta Tags</div>
         <div class="card-body">
           <h5 class="card-title">Branches </h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+          <p id="editMeta" contenteditable="true"  class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
         </div>
       </div>
 
@@ -65,7 +81,7 @@
         <div class="card-body">
           <h5 class="card-title">Important stuff </h5>
 
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+          <p class="card-text" id="editComment" contenteditable="true" >Some quick example text to build on the card title and make up the bulk of the card's content.
           </p>
         </div>
       </div>
@@ -77,12 +93,12 @@
         <!-- Buttons that alter the data base  -->
         <div class="row " style="height: 100%">
           <div class="col-12 p-1" style="height: 50%" >
-              <button type="button" class="btn btn-primary  btn-lg btn-block" style="height: 100%">
+              <button type="button" class="btn btn-primary  btn-lg btn-block" style="height: 100%" onclick="ApplyEdit(qid)">
                 <i class="fas fa-check-double fa-5x"></i>
               </button>
           </div>
           <div class="col-12 p-1" style="height: 50%">
-            <button type="button" class="btn btn-danger btn-lg btn-block" style="height: 100%">
+            <button type="button" class="btn btn-danger btn-lg btn-block" style="height: 100%" onclick="ApplyDelete(qid)">
               <i class="fas fa-times fa-5x"></i>
             </button>
           </div>

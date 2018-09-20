@@ -1,5 +1,5 @@
 
-<% include ../partials/header %>
+<% include ../partials/head %>
   <body>
     <% include ../partials/nav %>
 
@@ -9,9 +9,16 @@
     </h1>
     <br />
     <br />
-    <div>
-      <% include ../partials/rowdata %>
-    </div>
+
+    <% include ../partials/header %>
+
+    <ul class="list-group list-group-flush">
+      <% datas.forEach(function (data){   %>
+      <li class="list-group-item list-group-item-action">
+         <% include ../partials/rowdata %>
+      </li>
+      <% }); %>
+    </ul>
   </div>
 
 <% include ../partials/footer %>

@@ -53,25 +53,7 @@ function handle_database(query, callback){
 
 
 
-// single connection setup
 
-// var connection = mysql.createConnection({
-//     host    :'localhost',
-//     user    : 'root',
-//     password:'',
-//     database:'qadb'
-// });
-//
-// // connecting to database
-// connection.connect(function(err){
-//   if(!err){
-//     console.log("Database is connected .... nn ");
-//   }else  {
-//     console.log("Error connecting database ...  nn ");
-//     connection.end(); //this needs to be after every query
-//   }
-// });
-// end ''
 
 //setting up template engine
 app.set('view engine', 'ejs');
@@ -83,20 +65,35 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // app routes with queries ** real router not set up
 app.get("/", function(req, res ){
-  var query = 'SELECT * from questions LIMIT 2';
-  var data  = handle_database(query, function(err,data ){
+  var query = 'SELECT * from questions LIMIT 5';
+   handle_database(query, function(err,data ){
     if(err){
       res.json({"code" : 100, "status" : "Error in Querying"});
       return;
     }
 
-    console.log(data);
-    var datas = data[0];
-    res.render('pages/index', {datas:datas} );
+  //  console.log(data);
+  //  var datas = data[0];
+    res.render('pages/index', {datas:data} );
   });
 
 });
 // cannot find data
+app.update("/:id", function(req, res){
+
+})
+app.delete("/delete/:id", function(req, res , next) {
+  var question_id = req.params.id ;
+  var query = 'DELETE FROM questions WHERE id='+question_id ;
+
+  console.log(query);
+  
+
+
+})
+
+
+
 
 
 app.get("/data" , function(req, res){
@@ -135,3 +132,45 @@ app.get("/data" , function(req, res){
     }
   });
 } );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// single connection setup
+
+// var connection = mysql.createConnection({
+//     host    :'localhost',
+//     user    : 'root',
+//     password:'',
+//     database:'qadb'
+// });
+//
+// // connecting to database
+// connection.connect(function(err){
+//   if(!err){
+//     console.log("Database is connected .... nn ");
+//   }else  {
+//     console.log("Error connecting database ...  nn ");
+//     connection.end(); //this needs to be after every query
+//   }
+// });
+// end ''

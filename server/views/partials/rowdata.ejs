@@ -1,17 +1,20 @@
 
 
+
+
 <!-- ONE question ONLY  -->
 <div class="row row-eq-height">
   <div class="col-4">
     <!-- question:  and answers -->
     <div class="card bg-light" >
-      <div class="card-header">Questions</div>
+      <div class="card-header">Question Id -  <%= data.id %></div>
       <div class="card-body">
-        <h5 class="card-title"><%= datas.id %></h5>
 
-        <p id="editQues" contenteditable="true"  class="card-text"><%= datas.question %>
+
+        <p id="editQues_<%= data.id %>" contenteditable="true"  class="card-text">
+          <%= data.question %>
         </p>
-
+        <h5 class="card-title">Options </h5>
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item"
@@ -41,10 +44,8 @@
   <div class="card bg-light" style="height: 100%">
     <div class="card-header">Meta Tags</div>
     <div class="card-body">
-      <h5 class="card-title">Branches </h5>
-
-      <p id="editMeta" contenteditable="true"  class="card-text">
-        <%= datas.meta %>
+      <p id="editMeta_<%= data.id %>" contenteditable="true"  class="card-text">
+        <%= data.meta %>
       </p>
 
     </div>
@@ -58,12 +59,12 @@
     <div class="card-body">
       <h5 class="card-title">Important stuff </h5>
 
-      <%  if(datas.extra === null ) {%>
-      <p class="card-text" id="editComment" contenteditable="true" >
+      <%  if(data.extra === null ) {%>
+      <p class="card-text" id="editComment_<%= data.id %>" contenteditable="true" >
       <%= 'nothing has been commented here' %>
 
       <% }else{ %>
-      <%=   datas.extra %>
+      <%=   data.extra %>
       <% } %>
 
 
@@ -78,12 +79,12 @@
     <!-- Buttons that alter the data base  -->
     <div class="row " style="height: 100%">
       <div class="col-12 p-1" style="height: 50%" >
-          <button type="button" class="btn btn-primary  btn-lg btn-block" style="height: 100%" onclick="ApplyEdit(qid)">
+          <button type="button" class="btn btn-primary  btn-lg btn-block" style="height: 100%" onclick="ApplyEdit(<%= data.id %>)">
             <i class="fas fa-check-double fa-5x"></i>
           </button>
       </div>
       <div class="col-12 p-1" style="height: 50%">
-        <button type="button" class="btn btn-danger btn-lg btn-block" style="height: 100%" onclick="ApplyDelete(qid)">
+        <button type="button" class="btn btn-danger btn-lg btn-block" style="height: 100%" onclick="ApplyDelete(<%= data.id %>)">
           <i class="fas fa-times fa-5x"></i>
         </button>
       </div>

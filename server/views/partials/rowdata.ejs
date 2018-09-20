@@ -1,0 +1,95 @@
+
+
+<!-- ONE question ONLY  -->
+<div class="row row-eq-height">
+  <div class="col-4">
+    <!-- question:  and answers -->
+    <div class="card bg-light" >
+      <div class="card-header">Questions</div>
+      <div class="card-body">
+        <h5 class="card-title"><%= datas.id %></h5>
+
+        <p id="editQues" contenteditable="true"  class="card-text"><%= datas.question %>
+        </p>
+
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"
+            id="editOpA"
+            contenteditable="true"
+        >Option A - Cras justo odio</li>
+        <li class="list-group-item"
+            id="editOpB"
+            contenteditable="true"
+        >Option B - Dapibus ac facilisis in</li>
+        <li class="list-group-item"
+            id="editOpC"
+            contenteditable="true"
+        >Option C - Vestibulum at eros</li>
+        <li class="list-group-item"
+            id="editOpD"
+            contenteditable="true"
+
+        >Option D - Vestibulum at eros</li>
+      </ul>
+    </div>
+
+
+  </div>
+  <div class="col-3">
+  <!-- MetaTags -->
+  <div class="card bg-light" style="height: 100%">
+    <div class="card-header">Meta Tags</div>
+    <div class="card-body">
+      <h5 class="card-title">Branches </h5>
+
+      <p id="editMeta" contenteditable="true"  class="card-text">
+        <%= datas.meta %>
+      </p>
+
+    </div>
+  </div>
+
+  </div>
+  <div class="col-3" >
+  <!-- Comment section -->
+  <div class="card bg-light" style="height: 100%" >
+    <div class="card-header">Comment</div>
+    <div class="card-body">
+      <h5 class="card-title">Important stuff </h5>
+
+      <%  if(datas.extra === null ) {%>
+      <p class="card-text" id="editComment" contenteditable="true" >
+      <%= 'nothing has been commented here' %>
+
+      <% }else{ %>
+      <%=   datas.extra %>
+      <% } %>
+
+
+      </p>
+    </div>
+  </div>
+
+
+
+  </div>
+  <div class="col-2">
+    <!-- Buttons that alter the data base  -->
+    <div class="row " style="height: 100%">
+      <div class="col-12 p-1" style="height: 50%" >
+          <button type="button" class="btn btn-primary  btn-lg btn-block" style="height: 100%" onclick="ApplyEdit(qid)">
+            <i class="fas fa-check-double fa-5x"></i>
+          </button>
+      </div>
+      <div class="col-12 p-1" style="height: 50%">
+        <button type="button" class="btn btn-danger btn-lg btn-block" style="height: 100%" onclick="ApplyDelete(qid)">
+          <i class="fas fa-times fa-5x"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<!-- question ends here  -->

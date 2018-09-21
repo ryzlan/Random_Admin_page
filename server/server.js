@@ -78,16 +78,22 @@ app.get("/", function(req, res ){
   });
 
 });
-// cannot find data
-app.update("/:id", function(req, res){
 
-})
+app.post("/" , function(req, res) {
+  var query = 'UPDATE questions SET question ="'+req.body.question +'" , meta ="'+req.body.meta+'", extra =" '+req.body.comment.trim()+'" WHERE id ='+req.body.id ;
+  console.log(query);
+
+});
+
+
+
+
 app.delete("/delete/:id", function(req, res , next) {
   var question_id = req.params.id ;
   var query = 'DELETE FROM questions WHERE id='+question_id ;
 
   console.log(query);
-  
+
 
 
 })

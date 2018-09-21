@@ -7,14 +7,14 @@
   <div class="col-4">
     <!-- question:  and answers -->
     <div class="card bg-light" >
-      <div class="card-header">Question Id -  <%= data.id %></div>
+
       <div class="card-body">
 
-
+        <h5 class="card-title">Question Id -  <%= data.id %></h5>
         <p id="editQues_<%= data.id %>" contenteditable="true"  class="card-text">
           <%= data.question %>
         </p>
-        <h5 class="card-title">Options </h5>
+        <h6 class="card-title">Options </h6>
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item"
@@ -42,7 +42,7 @@
   <div class="col-3">
   <!-- MetaTags -->
   <div class="card bg-light" style="height: 100%">
-    <div class="card-header">Meta Tags</div>
+
     <div class="card-body">
       <p id="editMeta_<%= data.id %>" contenteditable="true"  class="card-text">
         <%= data.meta %>
@@ -55,9 +55,9 @@
   <div class="col-3" >
   <!-- Comment section -->
   <div class="card bg-light" style="height: 100%" >
-    <div class="card-header">Comment</div>
+
     <div class="card-body">
-      <h5 class="card-title">Important stuff </h5>
+      <h5 class="card-title">Important Changes </h5>
 
       <%  if(data.extra === null ) {%>
       <p class="card-text" id="editComment_<%= data.id %>" contenteditable="true" >
@@ -79,7 +79,12 @@
     <!-- Buttons that alter the data base  -->
     <div class="row " style="height: 100%">
       <div class="col-12 p-1" style="height: 50%" >
-          <button type="button" class="btn btn-primary  btn-lg btn-block" style="height: 100%" onclick="ApplyEdit(<%= data.id %>)">
+          <button
+          type="button"
+          class="btn btn-primary  btn-lg btn-block"
+          style="height: 100%"
+          onclick="ApplyEdit(<%= data.id %>)"
+          data-toggle="modal" data-target="#update_Modal">
             <i class="fas fa-check-double fa-5x"></i>
           </button>
       </div>

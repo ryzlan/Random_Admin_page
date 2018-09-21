@@ -8,7 +8,6 @@
   var meta_id = "editMeta_"+id ;
   var comment_id = "editComment_"+id;
 
-
   var question = document.getElementById(question_id).innerHTML;
   var meta = document.getElementById(meta_id).innerHTML;
   var comment = document.getElementById(comment_id).innerHTML;
@@ -17,6 +16,13 @@
   // var optionC= document.getElementById("editOpC").innerHTML;
   // var optionD= document.getElementById("editOpD").innerHTML;
   console.log(question + '==========' + meta + '===========' +comment  );
+
+  document.getElementById('id').value = id ;
+  document.getElementById('question').value = question.trim() ;
+  document.getElementById('meta').value = meta ;
+  document.getElementById('comment').value = comment ;
+
+
 
   // write a code to comunicate with backend
 

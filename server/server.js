@@ -10,6 +10,13 @@ app.listen(port, function(){
   console.log('app started!');
 });
 
+//setting up template engine
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 
 //data base setup
@@ -24,8 +31,12 @@ var pool = mysql.createPool({
 
 });
 
-function handle_database(query, callback){
 
+
+
+
+
+function handle_database(query, callback){
   pool.getConnection(function(err, connection){
     if(err){
       callback(true);
@@ -33,13 +44,14 @@ function handle_database(query, callback){
     }
     console.log('connected as id ' , connection.threadId);
 
-    connection.query(query, function(err, result){
+  connection.query(query, function(err, result){
       connection.release();
       if(!err){
         callback(false, result );
       }
 
     });
+
     connection.on('error' , function(err){
       callback(true);
       return ;
@@ -55,12 +67,6 @@ function handle_database(query, callback){
 
 
 
-//setting up template engine
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 
 // app routes with queries ** real router not set up
@@ -68,32 +74,42 @@ app.get("/", function(req, res ){
   var query = 'SELECT * from questions LIMIT 5';
    handle_database(query, function(err,data ){
     if(err){
-      res.json({"code" : 100, "status" : "Error in Querying"});
+      res.json({"code" : 100, "status" : "Error in Reading from database"});
       return;
     }
 
-  //  console.log(data);
-  //  var datas = data[0];
     res.render('pages/index', {datas:data} );
   });
 
 });
 
-app.post("/" , function(req, res) {
-  var query = 'UPDATE questions SET question ="'+req.body.question +'" , meta ="'+req.body.meta+'", extra =" '+req.body.comment.trim()+'" WHERE id ='+req.body.id ;
+app.put("/update" , function(req, res) {
+  var query = 'UPDATE questions SET question ="'+req.body.question +'" , meta ="'+req.body.meta+'", extra ="'+req.body.comment+'" WHERE id ='+req.body.id ;
   console.log(query);
-
+  handle_database(query, function(err,data){
+    if(err){
+      res.send({"code": 100 , "status" : "Error in Updating ", "error": err  });
+    }
+    //confirmation handling
+    res.send(data);
+  });
 });
 
 
 
 
-app.delete("/delete/:id", function(req, res , next) {
-  var question_id = req.params.id ;
+app.delete("/delete", function(req, res , next) {
+  var question_id = req.body.id ;
   var query = 'DELETE FROM questions WHERE id='+question_id ;
 
   console.log(query);
-
+  handle_database(query, function(err,data){
+    if(err){
+      res.send({"code": 500 , "status" : "Error in Deleting  ", "error": err  });
+    }
+    //confirmation handling
+    res.send({message:'The question has been deleted ', data: data  });
+  });
 
 
 })

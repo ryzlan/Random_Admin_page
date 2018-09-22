@@ -1,9 +1,7 @@
 
-// function editQues(){
-//   var edit
-// }
-
  function ApplyEdit(id){
+   // updating option not done]
+
   var question_id = "editQues_" + id;
   var meta_id = "editMeta_"+id ;
   var comment_id = "editComment_"+id;
@@ -16,21 +14,57 @@
   // var optionC= document.getElementById("editOpC").innerHTML;
   // var optionD= document.getElementById("editOpD").innerHTML;
   console.log(question + '==========' + meta + '===========' +comment  );
-
-  document.getElementById('id').value = id ;
-  document.getElementById('question').value = question.trim() ;
-  document.getElementById('meta').value = meta ;
-  document.getElementById('comment').value = comment ;
-
-
-
-  // write a code to comunicate with backend
+  var obj={
+    id: id,
+    question: question,
+    meta: meta ,
+    comment: comment
+  };
 
 
+  fetch('update', {
+  method: 'put',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify(obj)
+})
+  .then(res =>{
+  if(res.ok) return res.json();
+})
+  .then(data =>{
+    // handle confirmation
+  console.log(data);
+  window.location.reload(true);
+})
+  .catch(err =>{
+  // handle errr
+  console.error(err);
+});
 
 }
+
+
 function ApplyDelete(id){
-  alert(id);
+  // deleting options not done
+  var obj = {id: id}
+
+  fetch('delete', {
+    method: 'delete',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(obj)
+  })
+    .then(res =>{
+    if(res.ok) return res.json();
+  })
+    .then(data =>{
+      // handle confirmation
+      
+    console.log(data);
+    window.location.reload(true);
+  })
+    .catch(err =>{
+    // handle errr
+    console.error(err);
+  });
 
   // write a code to talk with back end
 }

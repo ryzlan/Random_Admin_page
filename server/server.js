@@ -32,67 +32,127 @@ var pool = mysql.createPool({
 });
 
 
-
-
-
-
-function handle_database(query, callback){
-  pool.getConnection(function(err, connection){
-    if(err){
-      callback(true);
-      return;
+class Database {
+  constructor(pool) {
+  		this.pool = pool;
+  	}
+    query( sql ) {
+        return new Promise( ( resolve, reject ) => {
+            this.pool.query(sql,function( err, rows ){
+                if ( err )
+                    return reject( err );
+                resolve( rows );
+            });
+        });
     }
-    console.log('connected as id ' , connection.threadId);
-
-  connection.query(query, function(err, result){
-      connection.release();
-      if(!err){
-        callback(false, result );
-      }
-
-    });
-
-    connection.on('error' , function(err){
-      callback(true);
-      return ;
-
-    } )
-
-
-  })
+    close() {
+        return new Promise( ( resolve, reject ) => {
+            this.pool.end( err => {
+                if ( err )
+                    return reject( err );
+                resolve();
+            } );
+        } );
+    }
 }
-
-
-
-
-
-
-
+const database = new Database(pool);
 
 // app routes with queries ** real router not set up
 app.get("/", function(req, res ){
-  var query = 'SELECT * from questions LIMIT 5';
-   handle_database(query, function(err,data ){
-    if(err){
-      res.json({"code" : 100, "status" : "Error in Reading from database"});
-      return;
-    }
 
-    res.render('pages/index', {datas:data} );
+
+var ques ,  ans = [];
+var sql = 'SELECT * from questions LIMIT 2';
+ database.query(sql)
+  .then((results) =>{
+    ques = results ;
+
+    var promises = [];
+      results.forEach((result)=>{
+      var id = result.id;
+
+      promises.push(answer_get(id));
+      })//loop
+        Promise.all(promises)
+          .then((data)=>{
+              ans= data;
+
+          })
+          .then(()=>{
+            var arr =[] ;
+            for(var i= 0 ; i <ques.length ; i++){
+              arr.push({
+                question : ques[i],
+                answers : ans[i]
+              });
+
+            }
+
+
+            // render data here
+            res.render('pages/index', {datas:arr} )
+            //  res.json(arr);
+            //         <% include ../partials/rowdata %>
+
+          })
+          .catch((err)=>{
+              res.send({"code" : 100, "status" : "Error in Reading database Answers", "error":err  })
+          });
+  }).catch((err)=>{
+    res.send({"code" : 100, "status" : "Error in Reading database Question", "error":err  });
+  });
+function answer_get(id){
+     return new Promise(function(resolve, reject){
+       var new_sql = 'SELECT * FROM answers WHERE question_id='+id ;
+       pool.query(new_sql, function(err, rows ){
+         if ( err )
+             return reject( err );
+         resolve( rows );
+       })
+
+     })
+}
+
   });
 
-});
+
+  //  handle_database(query, function(err,data ){
+  //   if(err){
+  //     res.json({"code" : 100, "status" : "Error in Reading from database"});
+  //     return;
+  //   }
+  //   console.log(data);
+  //
+  //   data.forEach(function(datas){
+  //      var id = datas.id;
+  //      var new_query = 'SELECT * from answers WHERE question_id='+id ;
+  //
+  //      handle_database(new_query, function(err, result){
+  //        if(err){
+  //          res.json({"code" : 100, "status" : "Error in Reading from database"});
+  //          return;
+  //        }
+  //        console.log(result);
+  //        // obj.question = datas;
+  //        // obj.answer.push(result);
+  //        //
+  //        // arr.push(obj);
+  //
+  //
+  //      })
+  //   })
+  //
+  //     //  res.render('pages/index', {datas:data} );
+  // });
+
+
+
 
 app.put("/update" , function(req, res) {
   var query = 'UPDATE questions SET question ="'+req.body.question +'" , meta ="'+req.body.meta+'", extra ="'+req.body.comment+'" WHERE id ='+req.body.id ;
-  console.log(query);
-  handle_database(query, function(err,data){
-    if(err){
-      res.send({"code": 100 , "status" : "Error in Updating ", "error": err  });
-    }
-    //confirmation handling
-    res.send(data);
-  });
+  //console.log(query);
+// handle updating answers
+
 });
 
 
@@ -102,97 +162,11 @@ app.delete("/delete", function(req, res , next) {
   var question_id = req.body.id ;
   var query = 'DELETE FROM questions WHERE id='+question_id ;
 
+
+
+//handle deleting all answers as well  onclick="ApplyDelete(<%= question.id %>)"
   console.log(query);
-  handle_database(query, function(err,data){
-    if(err){
-      res.send({"code": 500 , "status" : "Error in Deleting  ", "error": err  });
-    }
-    //confirmation handling
-    res.send({message:'The question has been deleted ', data: data  });
-  });
+
 
 
 })
-
-
-
-
-
-app.get("/data" , function(req, res){
-  let ques;
-  let ans;
-  connection.query('SELECT * from questions LIMIT 2', function(err, rows , fields){
-    if(!err){
-      console.log('the query went through ' );
-      ques = rows ;
-      ques.forEach(function(element) {
-        console.log(element.id);
-          connection.query('SELECT * from answers WHERE question_id='+ element.id +' LIMIT 5', function(err, rows , fields){
-            if(!err){
-              ans = rows ;
-              console.log('query went second time', ans  );
-              res.json({
-                "question" : ques,
-                "answer" : ans
-              })
-
-            }else{
-              console.log('Error while performing query', err);
-              res.json({"code" : 100, "status" : "Error while performing query" , "error" : err });
-              return;
-            }
-
-
-          });
-
-      });
-    //  res.json(rows);
-    }else {
-      console.log('Error while performing query', err);
-      res.json({"code" : 100, "status" : "Error while performing query" , "error" : err });
-      return;
-    }
-  });
-} );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// single connection setup
-
-// var connection = mysql.createConnection({
-//     host    :'localhost',
-//     user    : 'root',
-//     password:'',
-//     database:'qadb'
-// });
-//
-// // connecting to database
-// connection.connect(function(err){
-//   if(!err){
-//     console.log("Database is connected .... nn ");
-//   }else  {
-//     console.log("Error connecting database ...  nn ");
-//     connection.end(); //this needs to be after every query
-//   }
-// });
-// end ''

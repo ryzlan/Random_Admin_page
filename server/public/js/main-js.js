@@ -9,10 +9,10 @@
   var question = document.getElementById(question_id).innerHTML;
   var meta = document.getElementById(meta_id).innerHTML;
   var comment = document.getElementById(comment_id).innerHTML;
-  // var optionA = document.getElementById("editOpA").innerHTML;
-  // var optionB = document.getElementById("editOpB").innerHTML;
-  // var optionC= document.getElementById("editOpC").innerHTML;
-  // var optionD= document.getElementById("editOpD").innerHTML;
+  var optionA = document.getElementById("editOpA").innerHTML;
+  var optionB = document.getElementById("editOpB").innerHTML;
+  var optionC= document.getElementById("editOpC").innerHTML;
+  var optionD= document.getElementById("editOpD").innerHTML;
   console.log(question + '==========' + meta + '===========' +comment  );
   var obj={
     id: id,
@@ -57,7 +57,7 @@ function ApplyDelete(id){
   })
     .then(data =>{
       // handle confirmation
-      
+
     console.log(data);
     window.location.reload(true);
   })

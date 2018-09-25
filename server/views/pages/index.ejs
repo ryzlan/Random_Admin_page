@@ -10,6 +10,34 @@
     <br />
     <br />
 
+
+      <div id="updateSucess" class="alert alert-primary alert-dismissible fade is-hidden" role="alert">
+      <strong>Update Sucessful!</strong> your files have been updated
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+
+
+        <div id="deleteSucess" class="alert alert-danger alert-dismissible fade is-hidden" role="alert">
+        <strong>Delete Sucessful!</strong> your files have been deleted
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+
+        <div  id="error" class=" alert alert-warning alert-dismissible fade is-hidden" role="alert">
+        <strong>OH uhh..... </strong> Seems to be a problem here :(
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+
+
+
+
     <% include ../partials/header %>
 
     <ul class="list-group list-group-flush">
@@ -22,6 +50,8 @@
     </ul>
 
   </div>
+
+
 
 
 <% include ../partials/footer %>

@@ -45,15 +45,6 @@ class Database {
             });
         });
     }
-    close() {
-        return new Promise( ( resolve, reject ) => {
-            this.pool.end( err => {
-                if ( err )
-                    return reject( err );
-                resolve();
-            } );
-        } );
-    }
 }
 const database = new Database(pool);
 
@@ -62,7 +53,7 @@ app.get("/", function(req, res ){
 
 
 var ques ,  ans = [];
-var sql = 'SELECT * from questions LIMIT 2';
+var sql = 'SELECT * from questions LIMIT 10';
  database.query(sql)
   .then((results) =>{
     ques = results ;
@@ -73,34 +64,27 @@ var sql = 'SELECT * from questions LIMIT 2';
 
       promises.push(answer_get(id));
       })//loop
-        Promise.all(promises)
-          .then((data)=>{
-              ans= data;
-
-          })
-          .then(()=>{
-            var arr =[] ;
-            for(var i= 0 ; i <ques.length ; i++){
-              arr.push({
-                question : ques[i],
-                answers : ans[i]
-              });
-
-            }
-
-
-            // render data here
-            res.render('pages/index', {datas:arr} )
-            //  res.json(arr);
-            //         <% include ../partials/rowdata %>
-
-          })
-          .catch((err)=>{
-              res.send({"code" : 100, "status" : "Error in Reading database Answers", "error":err  })
+      return Promise.all(promises);
+    })
+    .then((data)=>{
+        ans= data;
+    })
+    .then(()=>{
+        var arr =[] ;
+        for(var i= 0 ; i <ques.length ; i++){
+          arr.push({
+              question : ques[i],
+              answers : ans[i]
           });
-  }).catch((err)=>{
-    res.send({"code" : 100, "status" : "Error in Reading database Question", "error":err  });
-  });
+
+        }
+        // render data here
+        res.render('pages/index', {datas:arr} )
+      })
+      .catch((err)=>{
+        res.send({"code" : 100, "status" : "Error in Reading database Answers", "error":err  })
+      });
+
 function answer_get(id){
      return new Promise(function(resolve, reject){
        var new_sql = 'SELECT * FROM answers WHERE question_id='+id ;
@@ -115,43 +99,45 @@ function answer_get(id){
 
   });
 
-
-  //  handle_database(query, function(err,data ){
-  //   if(err){
-  //     res.json({"code" : 100, "status" : "Error in Reading from database"});
-  //     return;
-  //   }
-  //   console.log(data);
-  //
-  //   data.forEach(function(datas){
-  //      var id = datas.id;
-  //      var new_query = 'SELECT * from answers WHERE question_id='+id ;
-  //
-  //      handle_database(new_query, function(err, result){
-  //        if(err){
-  //          res.json({"code" : 100, "status" : "Error in Reading from database"});
-  //          return;
-  //        }
-  //        console.log(result);
-  //        // obj.question = datas;
-  //        // obj.answer.push(result);
-  //        //
-  //        // arr.push(obj);
-  //
-  //
-  //      })
-  //   })
-  //
-  //     //  res.render('pages/index', {datas:data} );
-  // });
-
-
-
-
 app.put("/update" , function(req, res) {
   var query = 'UPDATE questions SET question ="'+req.body.question +'" , meta ="'+req.body.meta+'", extra ="'+req.body.comment+'" WHERE id ='+req.body.id ;
+  var options = req.body.options;
+  var promises= [];
+  options.forEach(function(option){
+  promises.push(update_all(option.oid, option.answer))  ;
+  }) ;
+
   //console.log(query);
+  // console.log(options);
+  // console.log(promises);
+
+  database.query(query)
+  .then((result)=>{
+    return Promise.all(promises);
+  })
+    .then((data)=>{
+        console.log(data);
+        res.send(data);
+      })
+      .catch((err)=>{
+    console.log(err);
+    res.send({"code" : 500, "status" : "Error in Updating question", "error":err})
+    })
+
+
 // handle updating answers
+function update_all(id,answer){
+     return new Promise(function(resolve, reject){
+       var new_sql = 'UPDATE answers SET answer="'+answer+'" WHERE id ='+id;
+       pool.query(new_sql, function(err, rows ){
+         if ( err )
+             return reject( err );
+         resolve( rows );
+       })
+
+     })
+}
+
 
 });
 
@@ -161,7 +147,21 @@ app.put("/update" , function(req, res) {
 app.delete("/delete", function(req, res , next) {
   var question_id = req.body.id ;
   var query = 'DELETE FROM questions WHERE id='+question_id ;
+  var another = 'DELETE FROM answers WHERE question_id='+question_id;
 
+  database.query(query)
+  .then((result)=>{
+    console.log(result);
+    return database.query(another)
+  })
+  .then((result)=>{
+    console.log(result);
+    res.send(result);
+  })
+  .catch((err)=>{
+    console.log(err);
+    res.send({"code" : 500, "status" : "Error in Deleting", "error":err})
+  });
 
 
 //handle deleting all answers as well  onclick="ApplyDelete(<%= question.id %>)"

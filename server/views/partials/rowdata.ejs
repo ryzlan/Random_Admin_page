@@ -11,19 +11,23 @@
       <div class="card-body">
 
         <h5 class="card-title">Question Id -  <%= question.id %></h5>
-        <p id="editQues_<%= data.id %>" contenteditable="true"  class="card-text">
+        <p id="editQues_<%= question.id %>" contenteditable="true"  class="card-text">
           <%= question.question %>
         </p>
         <h6 class="card-title">Options </h6>
       </div>
       <ul class="list-group list-group-flush">
+        <% var arr = []; %>
         <% answers.forEach(function (ans){   %>
-          <% const {is_correct , answer  } = ans ; %>
+          <% const {id, is_correct , answer  } = ans ; %>
         <li class="list-group-item"
-            id="editOpA"
+            id="editOp_<%= id %>"
             contenteditable="true"
-        ><%= answer %>
+        >
+        <%= answer %>
+
       </li>
+      <% arr.push(id); %>
 
       <% }); %>
       </ul>
@@ -36,7 +40,7 @@
   <div class="card bg-light" style="height: 100%">
 
     <div class="card-body">
-      <p id="editMeta_<%= data.id %>" contenteditable="true"  class="card-text">
+      <p id="editMeta_<%= question.id %>" contenteditable="true"  class="card-text">
         <%= question.meta %>
       </p>
 
@@ -50,14 +54,12 @@
 
     <div class="card-body">
       <h5 class="card-title">Important Changes </h5>
-
-      <%  if(question.extra === null ) {%>
-      <p class="card-text" id="editComment_<%= data.id %>" contenteditable="true" >
-      <%= 'nothing has been commented here' %>
-
-      <% }else{ %>
-      <%=   question.extra %>
-      <% } %>
+      <p class="card-text" id="editComment_<%= question.id %>" contenteditable="true" >
+        <%  if(question.extra === null ) {%>
+        <%= 'nothing has been commented here' %>
+        <% }else{ %>
+        <%=   question.extra %>
+        <% } %>
 
 
       </p>
@@ -75,13 +77,16 @@
           type="button"
           class="btn btn-primary  btn-lg btn-block"
           style="height: 100%"
-            data-toggle="modal" data-target="#update_Modal">
+          onclick="ApplyEdit(<%= question.id %> ,<%- JSON.stringify(arr) %> )"
+            >
             <i class="fas fa-check-double fa-5x"></i>
           </button>
       </div>
       <div class="col-12 p-1" style="height: 50%">
-        <button type="button" class="btn btn-danger btn-lg btn-block" style="height: 100%"
-          data-toggle="modal" data-target="#delete_Modal"
+        <button type="button"
+        class="btn btn-danger btn-lg btn-block"
+        style="height: 100%"
+        onclick="ApplyDelete(<%= question.id %>)"
          >
           <i class="fas fa-times fa-5x"></i>
         </button>
@@ -89,52 +94,9 @@
     </div>
   </div>
 
-
 </div>
 
 
 
-<div class="modal fade" id="update_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Data</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="ApplyEdit(<%= question.id %>)"
-          >Save changes!
-        </button>
-      </div>
-      <div class="modal-footer">
 
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="delete_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Data</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"
-        onclick="ApplyDelete(<%= question.id %>)"
-        >Delete data !!</button>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
 <!-- question ends here  -->

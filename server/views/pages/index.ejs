@@ -48,6 +48,53 @@
       </li>
       <% }); %>
     </ul>
+<!-- PAGINATION HERE  -->
+<nav aria-label="Page navigation example">
+    <% if (pageCount > 1) { %>
+                   <ul class="pagination justify-content-center">
+                       <% if (currentPage > 1) { %>
+                           <li class="page-item"><a class="page-link" href="/?page=1">First</a></li>
+                       <% }  %>
+                       <% var x = 1; %>
+                       <% if(currentPage > 5 ){ %>
+                       <% x = x + (currentPage - 4); %>
+                       <% } if(x !== 1 ){  %>
+                           <li class="disabled page-item"><a class="page-link">...</a></li>
+                       <% } %>
+                       <% for ( x; x <= pageCount; x++) { %>
+                           <% if (currentPage == x ) { %>
+                               <li class="active page-item">
+                                 <a class="page-link">
+                                 <%= currentPage %>
+                                 </a>
+                               </li>
+                           <% } else { %>
+                               <li class="page-item">
+                                 <a class="page-link" href="/?page=<%= x %>">
+                                   <%= x %>
+                                 </a>
+                               </li>
+                           <% } %>
+                           <% if (x == (currentPage + 4)) { %>
+                               <li class="disabled page-item"><a class="page-link">...</a></li>
+                           <% break;   %>
+                           <% } %>
+                       <% } %>
+                       <% if (currentPage != pageCount) { %>
+                          <li class="page-item">
+                            <a class="page-link" href="/?page=<%= Math.floor(pageCount) %>">
+                            Last
+                            </a>
+                        </li>
+                       <% }  %>
+                   </ul>
+               <% } %>
+</nav>
+
+<!-- PAGINATION ENDS  -->
+
+
+
 
   </div>
 

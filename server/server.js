@@ -48,21 +48,43 @@ class Database {
 }
 const database = new Database(pool);
 
+// pagination varaible
+var totalRec = 0,
+pageSize  = 6,
+pageCount = 0;
+var start       = 0;
+var currentPage = 1;
+
 // app routes with queries ** real router not set up
 app.get("/", function(req, res ){
+var count_query='SELECT COUNT(*) AS totalEntries FROM questions'
+database.query(count_query)
+  .then((result)=>{
+    console.log(result[0].totalEntries);
+    //pagination workk
 
+    totalRec      =  result[0].totalEntries
+    pageCount     =  Math.ceil(totalRec /  pageSize);
 
-var ques ,  ans = [];
-var sql = 'SELECT * from questions LIMIT 10';
- database.query(sql)
+    if (typeof req.query.page !== 'undefined') {
+      currentPage = req.query.page;
+    }
+
+    if(currentPage >1){
+      start = (currentPage - 1) * pageSize;
+    }
+
+    var ques ,  ans = [];
+    var sql = 'SELECT * FROM questions LIMIT '+pageSize+' OFFSET '+start;
+    return database.query(sql);
+ })
   .then((results) =>{
-    ques = results ;
+      ques = results ;
 
-    var promises = [];
+      var promises = [];
       results.forEach((result)=>{
-      var id = result.id;
-
-      promises.push(answer_get(id));
+          var id = result.id;
+          promises.push(answer_get(id));
       })//loop
       return Promise.all(promises);
     })
@@ -76,10 +98,15 @@ var sql = 'SELECT * from questions LIMIT 10';
               question : ques[i],
               answers : ans[i]
           });
-
         }
+
         // render data here
-        res.render('pages/index', {datas:arr} )
+        res.render('pages/index', {
+          datas       : arr,
+          pageSize    : pageSize,
+          pageCount   : pageCount,
+          currentPage : currentPage
+          })
       })
       .catch((err)=>{
         res.send({"code" : 100, "status" : "Error in Reading database Answers", "error":err  })

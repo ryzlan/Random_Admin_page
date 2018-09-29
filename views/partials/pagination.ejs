@@ -1,0 +1,48 @@
+<!-- PAGINATION HERE  -->
+<br />
+<nav aria-label="Page navigation example">
+    <% if (pageCount > 0) { %>
+                   <ul class="pagination justify-content-center">
+                       <% if (currentPage == 1) { %>
+                           <li class="page-item disabled"><a class="page-link">First</a></li>
+                       <% } else { %>
+                          <li class="page-item">
+                          <a class="page-link" href="/?page=<%= 1 %>">First</a></li>
+                        <% } %>
+                       <% var x =(Number(currentPage) > 5 ? Number(currentPage) - 4 : 1) %>
+                       <%  if(x !== 1 ){  %>
+                           <li class="disabled page-item"><a class="page-link">...</a></li>
+                       <% } %>
+                       <% for ( x; x <= (Number(currentPage)+4) && x<= pageCount ; x++) { %>
+                           <% if (x == currentPage ) { %>
+                               <li class="active page-item">
+                                 <a class="page-link">
+                                 <%= x %>
+                                 </a>
+                               </li>
+                           <% } else { %>
+                               <li class="page-item">
+                                 <a class="page-link" href="/?page=<%= x %>">
+                                   <%= x %>
+                                 </a>
+                               </li>
+                           <% } %>
+                           <% if (x == (currentPage + 4) && x < pageCount ) { %>
+                               <li class="disabled page-item"><a class="page-link">...</a></li>
+
+                           <% } %>
+                       <% } %>
+                       <% if (currentPage == pageCount) { %>
+                          <li class="page-item disabled"><a class="page-link">Last</a></li>
+                       <% } else {  %>
+                         <li class="page-item">
+                           <a class="page-link" href="/?page=<%= Math.floor(pageCount) %>">
+                             Last
+                           </a>
+                       </li>
+                        <%   }  %>
+                   </ul>
+               <% } %>
+</nav>
+
+<!-- PAGINATION ENDS  -->

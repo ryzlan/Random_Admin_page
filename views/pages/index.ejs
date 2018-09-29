@@ -1,0 +1,32 @@
+
+<% include ../partials/head %>
+  <body>
+    <% include ../partials/nav %>
+
+  <div class="container">
+    <h1>
+      Dynamic Data flowing
+    </h1>
+    <br />
+    <br />
+
+
+    <% include ../partials/confirmation %>
+
+    <% include ../partials/header %>
+
+    <ul class="list-group list-group-flush">
+      <% datas.forEach(function (data){   %>
+        <% const { question  , answers } = data; %>
+      <li class="list-group-item list-group-item-action">
+         <% include ../partials/rowdata %>
+      </li>
+      <% }); %>
+    </ul>
+
+    <% include ../partials/pagination %>
+  
+
+  </div>
+
+<% include ../partials/footer %>

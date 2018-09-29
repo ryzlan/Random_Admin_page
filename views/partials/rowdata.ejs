@@ -1,0 +1,97 @@
+
+
+
+
+<!-- ONE question ONLY  -->
+<div class="row row-eq-height">
+  <div class="col-4">
+    <!-- question:  and answers -->
+    <div class="card bg-light" >
+
+      <div class="card-body">
+
+        <h5 class="card-title">Question Id -  <%= question.id %></h5>
+        <p id="editQues_<%= question.id %>" contenteditable="true"  class="card-text">
+          <%= question.question %>
+        </p>
+        <h6 class="card-title">Options </h6>
+      </div>
+      <ul class="list-group list-group-flush">
+        <% var arr = []; %>
+        <% answers.forEach(function (ans){   %>
+          <% const {id, is_correct , answer  } = ans ; %>
+        <li class="list-group-item"
+            id="editOp_<%= id %>"
+            contenteditable="true"
+        >
+        <%= answer %>
+
+      </li>
+      <% arr.push(id); %>
+
+      <% }); %>
+      </ul>
+    </div>
+
+
+  </div>
+  <div class="col-3">
+  <!-- MetaTags -->
+  <div class="card bg-light" style="height: 100%">
+
+    <div class="card-body">
+      <p id="editMeta_<%= question.id %>" contenteditable="true"  class="card-text">
+        <%= question.meta %>
+      </p>
+
+    </div>
+  </div>
+
+  </div>
+  <div class="col-3" >
+  <!-- Comment section -->
+  <div class="card bg-light" style="height: 100%" >
+
+    <div class="card-body" id="editComment_<%= question.id %>" contenteditable="true">
+      
+
+        <%=   question.extra %>
+
+
+    </div>
+  </div>
+
+
+
+  </div>
+  <div class="col-2">
+    <!-- Buttons that alter the data base  -->
+    <div class="row " style="height: 100%">
+      <div class="col-12 p-1" style="height: 50%" >
+          <button
+          type="button"
+          class="btn btn-primary  btn-lg btn-block"
+          style="height: 100%"
+          onclick="ApplyEdit(<%= question.id %> ,<%- JSON.stringify(arr) %> )"
+            >
+            <i class="fas fa-check-double fa-5x"></i>
+          </button>
+      </div>
+      <div class="col-12 p-1" style="height: 50%">
+        <button type="button"
+        class="btn btn-danger btn-lg btn-block"
+        style="height: 100%"
+        onclick="ApplyDelete(<%= question.id %>)"
+         >
+          <i class="fas fa-times fa-5x"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<!-- question ends here  -->

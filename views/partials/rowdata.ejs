@@ -25,7 +25,9 @@
             contenteditable="true"
         >
         <%= answer %>
-
+        <% if(is_correct === 1 ){ %>
+        <span class="float-right"><i class="fas fa-check "></i></span>
+        <% } %>
       </li>
       <% arr.push(id); %>
 
@@ -53,7 +55,7 @@
   <div class="card bg-light" style="height: 100%" >
 
     <div class="card-body" id="editComment_<%= question.id %>" contenteditable="true">
-      
+
 
         <%=   question.extra %>
 

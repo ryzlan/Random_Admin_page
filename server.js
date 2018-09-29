@@ -111,7 +111,13 @@ database.query(count_query)
           })
       })
       .catch((err)=>{
-        res.send({"code" : 100, "status" : "Error in Reading database Answers", "error":err  })
+        res.render('pages/error',
+          {"code" : 100,
+          "status" : "Error in Reading database Answers",
+          "message": err.sqlMessage ,
+          "error":err  }
+        )
+
       });
 
 function answer_get(id){

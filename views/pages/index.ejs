@@ -11,21 +11,28 @@
     <br />
 
 
-    <% include ../partials/confirmation %>
+    <% include ../partials/showError %>
 
     <% include ../partials/header %>
 
-    <ul class="list-group list-group-flush">
-      <% datas.forEach(function (data){   %>
-        <% const { question  , answers } = data; %>
-      <li class="list-group-item list-group-item-action">
-         <% include ../partials/rowdata %>
+
+<div class="sublime" >
+  <ul class="list-group list-group-flush">
+  <% datas.forEach(function (data){   %>
+    <% var arr = []; %>
+    <% const { question  , answers } = data; %>
+    <% include ../partials/confirmation %>
+      <li class="list-group-item list-group-item-action toggle-content is-visible"
+      id="list_<%= question.id %>">
+        <% include ../partials/rowdata %>
       </li>
-      <% }); %>
-    </ul>
+  <% }); %>
+  </ul>
+</div>
+
 
     <% include ../partials/pagination %>
-  
+
 
   </div>
 

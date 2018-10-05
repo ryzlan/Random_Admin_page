@@ -1,7 +1,14 @@
 
  function ApplyEdit(id,arr){
+   var modal_id = '#updateConfirm_'+id;
+   var row_id='#row_'+id;
+   var list_id= '#list_'+id;
+
+
+
 
   var options= [];
+//  console.log(arr);
   arr.forEach(function(data){
     var option_id = "editOp_"+data;
      var answer = document.getElementById(option_id).innerHTML;
@@ -28,6 +35,7 @@
     comment: comment,
     options:options
   };
+//  console.log(obj);
 //
 //
   fetch('update', {
@@ -40,13 +48,10 @@
 })
   .then(data =>{
     // handle confirmation
-  console.log(data);
-
-  $('#updateConfirm').modal('show');
-  setTimeout(function(){
-    window.location.reload(true);
-  }, 3000);
-
+    $(modal_id).modal('hide');
+    $(row_id).addClass('tada animated');
+  //  setTimeout(function(){ window.location.reload(true); }, 1000);
+    //window.location.reload(true);
   })
   .catch(err =>{
   // handle errr
@@ -55,14 +60,32 @@
 });
 
 }
+var hide = function(elem) {
+
+  // Give the element a height to change from
+  elem.style.height = elem.scrollHeight + 'px';
+
+  // Set the height back to 0
+  window.setTimeout(function() {
+    elem.style.height = '0';
+  }, 1);
+
+  // When the transition is complete, hide it
+  window.setTimeout(function() {
+    elem.classList.remove('is-visible');
+  }, 350);
+
+};
 
 
 function ApplyDelete(id){
   // deleting options not done
   var obj = {id: id}
-
-
-
+//  console.log(obj);
+  var modal_id = '#deleteConfirm_'+id;
+  var row_id='#row_'+id;
+  var list_id= 'list_'+id;
+  var list_elem= document.getElementById(list_id);
 
   fetch('delete', {
     method: 'delete',
@@ -74,13 +97,12 @@ function ApplyDelete(id){
   })
   .then(data =>{
     // handle confirmation
-    $('#deleteConfirm').modal('show');
-    //console.log(data);
+    $(modal_id).modal('hide');
+    //$(row_id).addClass('hinge animated');
+    $(row_id).addClass('bounceOutRight animated');
+    setTimeout(function(){ hide(list_elem); }, 1000);
 
-  setTimeout(function(){
-
-    window.location.reload(true);
-  }, 3000);
+  //   window.location.reload(true);
 
   })
   .catch(err =>{
@@ -90,9 +112,4 @@ function ApplyDelete(id){
   });
 
   // write a code to talk with back end
-}
-
-
-function reload(){
-  window.location.reload(true);
 }

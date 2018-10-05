@@ -12,3 +12,64 @@
 .is-hidden {
   display: none;
 }
+
+.sublime li {
+  opacity: 0;
+  animation: fadeIn 0.4s 1;
+  animation-fill-mode: forwards;
+}
+
+.sublime li:nth-child(5n+1) {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+
+.sublime li:nth-child(5n+2) {
+  -webkit-animation-delay: 0.8s;
+  animation-delay: 0.8s;
+}
+
+.sublime li:nth-child(5n+3) {
+  -webkit-animation-delay: 1.2s;
+  animation-delay: 1.2s;
+}
+
+.sublime li:nth-child(5n+4) {
+  -webkit-animation-delay: 1.6s;
+  animation-delay: 1.6s;
+}
+
+.sublime li:nth-child(5n+5) {
+  -webkit-animation-delay: 2.0s;
+  animation-delay: 2.0s;
+}
+.sublime li:nth-child(5n+6) {
+  -webkit-animation-delay: 1.8s;
+  animation-delay: 1.8s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
+.margin-bottom{
+  margin-bottom: 0px;
+}
+.dnone{
+  display: none;
+}
+
+.toggle-content {
+  display: none;
+  height: 0;
+  overflow: hidden;
+  transition: height 350ms ease-in-out;
+}
+
+.toggle-content.is-visible {
+  display: block;
+  height: auto;
+}

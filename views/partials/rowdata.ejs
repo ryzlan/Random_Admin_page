@@ -1,9 +1,9 @@
 
-
+<!-- confirmation prompt  -->
 
 
 <!-- ONE question ONLY  -->
-<div class="row row-eq-height">
+<div class="row row-eq-height" id="row_<%= question.id %>">
   <div class="col-4">
     <!-- question:  and answers -->
     <div class="card bg-light" >
@@ -17,19 +17,22 @@
         <h6 class="card-title">Options </h6>
       </div>
       <ul class="list-group list-group-flush">
-        <% var arr = []; %>
+
         <% answers.forEach(function (ans){   %>
           <% const {id, is_correct , answer  } = ans ; %>
         <li class="list-group-item"
-            id="editOp_<%= id %>"
-            contenteditable="true"
+
         >
-        <%= answer %>
+        <p class="float-left margin-bottom" id="editOp_<%= id %>"
+        contenteditable="true">
+
+          <%= answer %>
+        </p>
+
         <% if(is_correct === 1 ){ %>
         <span class="float-right"><i class="fas fa-check "></i></span>
         <% } %>
       </li>
-      <% arr.push(id); %>
 
       <% }); %>
       </ul>
@@ -66,30 +69,34 @@
 
 
   </div>
-  <div class="col-2">
+  <div class="col-2 d-flex flex-column justify-content-around  align-items-center">
     <!-- Buttons that alter the data base  -->
-    <div class="row " style="height: 100%">
-      <div class="col-12 p-1" style="height: 50%" >
+
+      <div class="" style="width:inherit">
           <button
           type="button"
-          class="btn btn-primary  btn-lg btn-block"
-          style="height: 100%"
-          onclick="ApplyEdit(<%= question.id %> ,<%- JSON.stringify(arr) %> )"
+          class="bttn-float bttn-lg bttn-success bttn-block "
+
+          data-toggle="modal" data-target="#updateConfirm_<%= question.id %>"
             >
-            <i class="fas fa-check-double fa-5x"></i>
+            <i class="fas fa-check-double fa-2x"></i>
           </button>
       </div>
-      <div class="col-12 p-1" style="height: 50%">
+      <div class="" style="width:inherit">
         <button type="button"
-        class="btn btn-danger btn-lg btn-block"
-        style="height: 100%"
-        onclick="ApplyDelete(<%= question.id %>)"
+        class="bttn-float bttn-lg bttn-danger bttn-block "
+        data-toggle="modal" data-target="#deleteConfirm_<%= question.id %>"
          >
-          <i class="fas fa-times fa-5x"></i>
+          <i class="fas fa-times fa-2x"></i>
         </button>
       </div>
-    </div>
+
   </div>
+
+
+
+
+
 
 </div>
 

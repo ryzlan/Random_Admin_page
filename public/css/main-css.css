@@ -55,12 +55,10 @@
     opacity: 1.0;
   }
 }
-.margin-bottom{
-  margin-bottom: 0px;
+.marginbottom{
+  margin-bottom: 0px!important;
 }
-.dnone{
-  display: none;
-}
+
 
 .toggle-content {
   display: none;

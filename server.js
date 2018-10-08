@@ -4,7 +4,7 @@ var port = process.env.PORT || 8000;
 var helmet = require('helmet');
 var app = express();
 const bodyParser = require('body-parser');
-
+var mysql= require('mysql');
 
 //starting server
 app.listen(port, function(){
@@ -22,18 +22,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //data base setup
-var mysql= require('mysql');
+
+var { HOST,
+  USER ,
+  PASSWORD ,
+  DATABASE ,
+  connectionLimit
+} =require('./config/SQLconfig');
+
 var pool = mysql.createPool({
-  connectionLimit  : 100,
-  host             : 'localhost',
-  user             : 'root',
-  password         :'',
-  database         :'qadb',
-  debug            : false
+ connectionLimit  : connectionLimit,
+ host             : HOST,
+ user             : USER,
+ password         : PASSWORD,
+ database         : DATABASE,
+ debug            : false
 
 });
-
-
+//console.log(pool);
 class Database {
   constructor(pool) {
   		this.pool = pool;
@@ -48,6 +54,7 @@ class Database {
         });
     }
 }
+
 const database = new Database(pool);
 
 // pagination varaible
@@ -111,6 +118,7 @@ database.query(count_query)
           })
       })
       .catch((err)=>{
+        console.error(err);
         res.render('pages/error',
           {"code" : 100,
           "status" : "Error in Reading database Answers",

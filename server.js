@@ -110,6 +110,8 @@ database.query(count_query)
         }
 
         // render data here
+        //res.send(arr);
+
         res.render('pages/index', {
           datas       : arr,
           pageSize    : pageSize,

@@ -4,7 +4,7 @@
 
 <!-- ONE question ONLY  -->
 <div class="row row-eq-height" id="row_<%= question.id %>">
-  <div class="col-4">
+  <div class="col-3">
     <!-- question:  and answers -->
     <div class="card bg-light" >
 
@@ -53,7 +53,7 @@
   </div>
 
   </div>
-  <div class="col-3" >
+  <div class="col-2" >
   <!-- Comment section -->
   <div class="card bg-light" style="height: 100%" >
 
@@ -69,25 +69,63 @@
 
 
   </div>
-  <div class="col-2 d-flex flex-column justify-content-around  align-items-center">
+  <div class="col-3" >
+    <!-- Select box  -->
+    <div class="card bg-light" style="height: 100%" >
+  
+      <div class="card-body" id="editComment_<%= question.id %>" >
+          
+          
+          <select name="options" id="firstSelect_<%= question.id %>" onchange="getvalfirst(this);">
+          <option value="">---</option>
+            <% types.forEach((item , index) =>{ %>
+              <option value="<%= item.track_name %>"> 
+              <%= item.track_name %> 
+              </option>
+            <%}) %>
+          </select>
+          <select id="secondSelect_<%= question.id %>" onchange="getvalsecond(this );" ></select>
+          <select id="thirdSelect_<%= question.id %>" onchange="getvalthird(this );"></select>
+           
+      </div>
+    </div>
+  
+  
+  
+    </div>
+  <div class="col-1 d-flex flex-column justify-content-around  align-items-center">
     <!-- Buttons that alter the data base  -->
 
       <div class="" style="width:inherit">
           <button
           type="button"
-          class="bttn-float bttn-lg bttn-success bttn-block "
+          class="bttn-float  bttn-success bttn-block "
 
           data-toggle="modal" data-target="#updateConfirm_<%= question.id %>"
             >
-            <i class="fas fa-check-double fa-2x"></i>
+            <i class="fas fa-check-double "></i>
           </button>
       </div>
+
+
+      <div class="" style="width:inherit">
+        <button
+        type="button"
+        class="bttn-float  bttn-success bttn-block "
+
+        data-toggle="modal" data-target="#tracksConfirm_<%= question.id %>"
+          >
+          Add Tracks
+        </button>
+    </div>
+
+
       <div class="" style="width:inherit">
         <button type="button"
-        class="bttn-float bttn-lg bttn-danger bttn-block "
+        class="bttn-float  bttn-danger bttn-block "
         data-toggle="modal" data-target="#deleteConfirm_<%= question.id %>"
          >
-          <i class="fas fa-times fa-2x"></i>
+          <i class="fas fa-times "></i>
         </button>
       </div>
 

@@ -3,7 +3,7 @@
 const HOST = "localhost";
 const USER = 'root';
 const PASSWORD = '';
-const DATABASE = 'qadb';
+const DATABASE = 'podb';
 const connectionLimit =100;
 
 module.exports ={

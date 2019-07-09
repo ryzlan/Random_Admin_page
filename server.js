@@ -3,6 +3,7 @@ var express = require('express');
 var port = process.env.PORT || 8000;
 var helmet = require('helmet');
 var app = express();
+const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 var mysql= require('mysql');
 
@@ -100,7 +101,7 @@ database.query(count_query)
     .then((data)=>{
         ans= data;
     })
-    .then(()=>{
+    .then(async ()=>{
         var arr =[] ;
         for(var i= 0 ; i <ques.length ; i++){
           arr.push({
@@ -108,11 +109,17 @@ database.query(count_query)
               answers : ans[i]
           });
         }
-
+        
+        //get select data 
+        var resi = await fetch('https://api.porashona.online/api/tracks');
+        var datay = await resi.json();
+        //console.log(datay);
+        
         // render data here
         //res.send(arr);
 
         res.render('pages/index', {
+          types       :datay,
           datas       : arr,
           pageSize    : pageSize,
           pageCount   : pageCount,
@@ -187,6 +194,36 @@ function update_all(id,answer){
 });
 
 
+app.post("/tracks", function(req , res ){
+  var question_id = req.body.id ;
+  console.log(req.body);
+  // check if qid present
+  var count_query='SELECT COUNT(*) AS qids FROM tracks WHERE q_id='+question_id;
+    database.query(count_query)
+      .then((result)=>{
+        var count =result[0].qids
+        console.log(count);
+        if(count !== 0 ){
+          var Updatequery = 'UPDATE tracks SET track ="'+req.body.track +'" , subtrack ="'+req.body.subtrack+'", subject ="'+req.body.subject+'" WHERE q_id ='+question_id ;
+          return database.query(Updatequery);
+        }else{
+          var Insertquery = `INSERT INTO tracks (q_id, track, subtrack, subject)
+          VALUES ('${req.body.id}', '${req.body.track}', '${req.body.subtrack}','${req.body.subject}')`
+          return database.query(Insertquery);
+        }
+        
+      })
+      .then((result) =>{
+        console.log(result);
+        
+        res.send({msg:" Tracks added successfully !!!"})
+      })
+      .catch((err)=>{
+        console.log(err);
+        res.send({"code" : 500, "status" : "Error in adding Tracks", "error":err})
+      });
+
+    });
 
 
 app.delete("/delete", function(req, res , next) {

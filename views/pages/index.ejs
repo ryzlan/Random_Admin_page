@@ -1,6 +1,7 @@
 
 <% include ../partials/head %>
-  <body>
+  <body onload="startUp()">
+      
     <% include ../partials/nav %>
 
   <div class="container">
@@ -22,7 +23,7 @@
     <% var arr = []; %>
     <% const { question  , answers } = data; %>
     <% include ../partials/confirmation %>
-      <li class="list-group-item list-group-item-action toggle-content is-visible"
+      <li class="list-group-item list-group-item-action  is-visible"
       id="list_<%= question.id %>">
         <% include ../partials/rowdata %>
       </li>

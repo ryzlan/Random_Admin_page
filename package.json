@@ -14,8 +14,10 @@
     "express": "^4.16.3",
     "express-ejs-layouts": "^2.5.0",
     "helmet": "^3.13.0",
+    "jquery-chained": "^2.0.0-beta.2",
     "mssql": "^4.2.1",
     "mysql": "^2.16.0",
+    "node-fetch": "^2.6.0",
     "nodemon": "^1.18.4"
   }
 }
